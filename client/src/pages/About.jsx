@@ -14,8 +14,8 @@ const TEAM = [
     photo: '/team/imran.jpg',
     badge: 'Leadership',
     accent: 'linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%)',
-    badgeBg: 'rgba(212,175,55,0.12)',
-    badgeColor: '#B8860B',
+    badgeBg: 'rgba(212,175,55,0.18)',
+    badgeColor: '#FBBF24',
   },
   {
     name: 'Ganesh J',
@@ -23,8 +23,8 @@ const TEAM = [
     photo: '/team/ganesh.jpg',
     badge: 'Engineering',
     accent: 'linear-gradient(135deg, #7C3AED 0%, #A855F7 100%)',
-    badgeBg: 'rgba(124,58,237,0.10)',
-    badgeColor: '#7C3AED',
+    badgeBg: 'rgba(124,58,237,0.18)',
+    badgeColor: '#C084FC',
   },
   {
     name: 'N. Mohamed Abdul Kalam',
@@ -32,8 +32,8 @@ const TEAM = [
     photo: '/team/kalam.png',
     badge: 'Engineering',
     accent: 'linear-gradient(135deg, #7C3AED 0%, #A855F7 100%)',
-    badgeBg: 'rgba(124,58,237,0.10)',
-    badgeColor: '#7C3AED',
+    badgeBg: 'rgba(124,58,237,0.18)',
+    badgeColor: '#C084FC',
   },
   {
     name: 'Mohamed Najmi',
@@ -41,8 +41,8 @@ const TEAM = [
     photo: '/team/najmi.jpg',
     badge: 'Engineering',
     accent: 'linear-gradient(135deg, #7C3AED 0%, #A855F7 100%)',
-    badgeBg: 'rgba(124,58,237,0.10)',
-    badgeColor: '#7C3AED',
+    badgeBg: 'rgba(124,58,237,0.18)',
+    badgeColor: '#C084FC',
   },
   {
     name: 'Mohamed Sajith S',
@@ -50,8 +50,8 @@ const TEAM = [
     photo: '/team/sajith.jpg',
     badge: 'Design',
     accent: 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
-    badgeBg: 'rgba(14,165,233,0.10)',
-    badgeColor: '#0369A1',
+    badgeBg: 'rgba(14,165,233,0.18)',
+    badgeColor: '#38BDF8',
   },
   {
     name: 'Aman Yusuf Syed M',
@@ -59,8 +59,17 @@ const TEAM = [
     photo: '/team/aman.png',
     badge: 'Development',
     accent: 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
-    badgeBg: 'rgba(14,165,233,0.10)',
-    badgeColor: '#0369A1',
+    badgeBg: 'rgba(14,165,233,0.18)',
+    badgeColor: '#38BDF8',
+  },
+  {
+    name: 'Hameed Afsar KM',
+    role: 'Head of Media Department',
+    photo: '/team/Hameed Afsar KM.png',
+    badge: 'Media Lead',
+    accent: 'linear-gradient(135deg, #EC4899 0%, #F472B6 100%)',
+    badgeBg: 'rgba(236,72,153,0.18)',
+    badgeColor: '#F472B6',
   },
   {
     name: 'Irfan Barith N',
@@ -68,8 +77,8 @@ const TEAM = [
     photo: '/team/irfan.jpg',
     badge: 'Business Dev',
     accent: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)',
-    badgeBg: 'rgba(16,185,129,0.10)',
-    badgeColor: '#065F46',
+    badgeBg: 'rgba(16,185,129,0.18)',
+    badgeColor: '#34D399',
   },
 ];
 
@@ -294,21 +303,24 @@ export default function About() {
           </Box>
 
           {/* Team Grid */}
-          <Grid container spacing={{ xs: 3, md: 4 }} justifyContent="center">
+          <Grid container spacing={{ xs: 1.5, sm: 2.5, md: 3 }} justifyContent="center">
             {TEAM.map((member, idx) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={member.name}>
+              <Grid item xs={6} sm={6} md={4} lg={3} key={member.name}>
                 <Box
                   className="team-card"
                   sx={{
-                    animationDelay: `${idx * 0.10}s`,
-                    borderRadius: '20px',
+                    animationDelay: `${idx * 0.08}s`,
+                    borderRadius: { xs: '14px', sm: '18px', md: '20px' },
                     overflow: 'hidden',
-                    background: 'rgba(255,255,255,0.04)',
+                    background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
                     border: '1px solid rgba(255,255,255,0.10)',
                     backdropFilter: 'blur(12px)',
-                    transition: 'transform 0.40s cubic-bezier(0.22,1,0.36,1), box-shadow 0.40s ease',
+                    transition: 'all 0.35s cubic-bezier(0.22,1,0.36,1)',
                     cursor: 'default',
                     position: 'relative',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
                   }}
                 >
                   {/* Accent gradient bar (grows on hover) */}
@@ -329,7 +341,7 @@ export default function About() {
                     className="team-photo-wrap"
                     sx={{
                       width: '100%',
-                      height: { xs: 260, sm: 280, md: 300 },
+                      height: { xs: 170, sm: 230, md: 270 },
                       overflow: 'hidden',
                       position: 'relative',
                       background: 'linear-gradient(145deg, #1A2456 0%, #0D1635 100%)',
@@ -362,11 +374,11 @@ export default function About() {
                           gap: 1,
                         }}
                       >
-                        <Typography sx={{ fontSize: '3.5rem', fontWeight: 900, color: '#fff', lineHeight: 1 }}>
+                        <Typography sx={{ fontSize: { xs: '2.2rem', sm: '3.5rem' }, fontWeight: 900, color: '#fff', lineHeight: 1 }}>
                           {member.name.split(' ').map(w => w[0]).slice(0, 2).join('')}
                         </Typography>
-                        <Typography sx={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                          Photo Coming Soon
+                        <Typography sx={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                          Photo Soon
                         </Typography>
                       </Box>
                     )}
@@ -386,40 +398,61 @@ export default function About() {
                     <Box
                       sx={{
                         position: 'absolute',
-                        bottom: 12, left: 14,
-                        px: 1.5, py: 0.4,
+                        bottom: { xs: 8, sm: 12 },
+                        left: { xs: 8, sm: 12 },
+                        px: { xs: 1, sm: 1.5 },
+                        py: { xs: 0.25, sm: 0.4 },
                         borderRadius: '50px',
-                        background: member.badgeBg,
-                        border: `1px solid ${member.badgeColor}55`,
+                        background: 'rgba(10, 17, 40, 0.75)',
+                        border: `1px solid ${member.badgeColor}66`,
                         backdropFilter: 'blur(8px)',
+                        zIndex: 2,
                       }}
                     >
-                      <Typography sx={{ fontSize: '0.68rem', fontWeight: 800, color: member.badgeColor === '#B8860B' ? '#D4AF37' : member.badgeColor, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                      <Typography
+                        sx={{
+                          fontSize: { xs: '0.60rem', sm: '0.68rem' },
+                          fontWeight: 800,
+                          color: member.badgeColor,
+                          letterSpacing: '0.06em',
+                          textTransform: 'uppercase',
+                          lineHeight: 1.2,
+                        }}
+                      >
                         {member.badge}
                       </Typography>
                     </Box>
                   </Box>
 
                   {/* Text content */}
-                  <Box sx={{ px: 2.5, py: 2.5 }}>
+                  <Box sx={{ p: { xs: 1.5, sm: 2, md: 2.5 }, flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <Typography
                       sx={{
                         color: '#FFFFFF',
                         fontWeight: 800,
-                        fontSize: '1rem',
+                        fontSize: { xs: '0.85rem', sm: '0.95rem', md: '1.05rem' },
                         lineHeight: 1.25,
-                        mb: 0.6,
+                        mb: 0.5,
                         letterSpacing: '-0.01em',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
                       }}
                     >
                       {member.name}
                     </Typography>
                     <Typography
                       sx={{
-                        fontSize: '0.82rem',
-                        color: 'rgba(255,255,255,0.50)',
+                        fontSize: { xs: '0.72rem', sm: '0.78rem', md: '0.84rem' },
+                        color: 'rgba(255,255,255,0.60)',
                         fontWeight: 500,
                         letterSpacing: '0.01em',
+                        lineHeight: 1.3,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
                       }}
                     >
                       {member.role}

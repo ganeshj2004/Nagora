@@ -6,9 +6,16 @@ export default function SectionHeading({
   title, 
   subtitle, 
   align = 'center',
-  titleColor = '#0A1128',
-  subtitleColor = '#475569'
+  titleColor,
+  subtitleColor,
+  lightMode = true
 }) {
+  const actualTitleColor = titleColor || (lightMode ? '#0A1128' : '#FFFFFF');
+  const actualSubtitleColor = subtitleColor || (lightMode ? '#475569' : 'rgba(255, 255, 255, 0.7)');
+  const pillBg = lightMode ? 'rgba(124, 58, 237, 0.08)' : 'rgba(212, 175, 55, 0.12)';
+  const pillColor = lightMode ? '#7C3AED' : '#D4AF37';
+  const pillBorder = lightMode ? '1px solid rgba(124, 58, 237, 0.2)' : '1px solid rgba(212, 175, 55, 0.35)';
+
   return (
     <Box 
       sx={{ 
@@ -23,15 +30,15 @@ export default function SectionHeading({
           label={pill}
           size="medium"
           sx={{
-            backgroundColor: 'rgba(124, 58, 237, 0.08)',
-            color: '#7C3AED',
+            backgroundColor: pillBg,
+            color: pillColor,
             fontWeight: 700,
             fontSize: '0.8rem',
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             mb: 2,
             px: 1,
-            border: '1px solid rgba(124, 58, 237, 0.2)',
+            border: pillBorder,
           }}
         />
       )}
@@ -39,7 +46,7 @@ export default function SectionHeading({
       <Typography
         variant="h2"
         sx={{
-          color: titleColor,
+          color: actualTitleColor,
           fontWeight: 800,
           lineHeight: 1.15,
           letterSpacing: '-0.02em',
@@ -53,7 +60,7 @@ export default function SectionHeading({
         <Typography
           variant="subtitle1"
           sx={{
-            color: subtitleColor,
+            color: actualSubtitleColor,
             fontSize: { xs: '1rem', md: '1.125rem' },
             lineHeight: 1.6,
             maxWidth: 650,

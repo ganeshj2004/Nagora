@@ -172,7 +172,7 @@ export default function Footer() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Mail size={18} color="#D4AF37" />
                 <Typography sx={{ color: '#94A3B8', fontSize: '0.95rem' }}>
-                  contact@nagoradigital.com
+                  contact.nagora26@gmail.com
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -185,7 +185,7 @@ export default function Footer() {
                 <MessageSquare size={18} color="#25D366" />
                 <Typography
                   component="a"
-                  href="https://wa.me/918072443590"
+                  href="https://wa.me/918072443590?text=Hi%20NAGORA%20Team!%20%F0%9F%90%8B%20I%20found%20your%20website%20and%20I'd%20like%20to%20discuss%20a%20project%20with%20your%20team%20(Web%2FApp%2FSEO%2FBranding).%20Can%20we%20schedule%20a%20quick%20consultation%3F"
                   target="_blank"
                   rel="noreferrer"
                   sx={{ color: '#25D366', textDecoration: 'none', fontWeight: 600, fontSize: '0.95rem' }}

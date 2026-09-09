@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Container, Typography, Button, Grid, Chip } from '@mui/material';
-import { ArrowRight, Sparkles, Code, Smartphone, Camera, Video, Palette } from 'lucide-react';
+import { Box, Container, Typography, Button, Grid, Chip, Stack } from '@mui/material';
+import { ArrowRight, Sparkles, Code, Smartphone, Camera, Video, Palette, Percent } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function HeroSection() {
@@ -41,21 +41,44 @@ export default function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <Chip
-                icon={<Sparkles size={14} color="#7C3AED" />}
-                label="GROWING YOUR PROFIT, TOGETHER"
-                size="small"
-                sx={{
-                  backgroundColor: 'rgba(124, 58, 237, 0.08)',
-                  color: '#7C3AED',
-                  fontWeight: 800,
-                  fontSize: '0.78rem',
-                  letterSpacing: '0.1em',
-                  mb: 3,
-                  px: 1,
-                  border: '1px solid rgba(124, 58, 237, 0.2)',
-                }}
-              />
+              <Stack direction="row" spacing={1.5} flexWrap="wrap" sx={{ mb: 3, gap: 1 }}>
+                <Chip
+                  icon={<Sparkles size={14} color="#7C3AED" />}
+                  label="GROWING YOUR PROFIT, TOGETHER"
+                  size="small"
+                  sx={{
+                    backgroundColor: 'rgba(124, 58, 237, 0.08)',
+                    color: '#7C3AED',
+                    fontWeight: 800,
+                    fontSize: '0.78rem',
+                    letterSpacing: '0.1em',
+                    px: 1,
+                    border: '1px solid rgba(124, 58, 237, 0.2)',
+                  }}
+                />
+                <Chip
+                  icon={<Percent size={14} color="#B8860B" />}
+                  label="NEW: 50% DOWN + 0% EMI PLANS"
+                  size="small"
+                  onClick={() => {
+                    const el = document.getElementById('emi-calculator');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  sx={{
+                    backgroundColor: 'rgba(212, 175, 55, 0.12)',
+                    color: '#B8860B',
+                    fontWeight: 800,
+                    fontSize: '0.78rem',
+                    letterSpacing: '0.08em',
+                    px: 1,
+                    border: '1px solid rgba(212, 175, 55, 0.4)',
+                    cursor: 'pointer',
+                    '&:hover': {
+                      backgroundColor: 'rgba(212, 175, 55, 0.22)',
+                    }
+                  }}
+                />
+              </Stack>
             </motion.div>
 
             <motion.div

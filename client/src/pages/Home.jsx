@@ -6,6 +6,7 @@ import HeroSection from '../sections/HeroSection';
 import ImpactSection from '../sections/ImpactSection';
 import AboutSection from '../sections/AboutSection';
 import ServicesSection from '../sections/ServicesSection';
+import EmiCalculatorSection from '../sections/EmiCalculatorSection';
 import PortfolioSection from '../sections/PortfolioSection';
 import ShowreelSection from '../sections/ShowreelSection';
 import WhyUsSection from '../sections/WhyUsSection';
@@ -36,6 +37,7 @@ export default function Home() {
       <ImpactSection />
       <AboutSection />
       <ServicesSection />
+      <EmiCalculatorSection />
       <PortfolioSection />
       <ShowreelSection />
       <WhyUsSection />

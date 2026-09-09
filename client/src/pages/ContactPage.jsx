@@ -46,7 +46,7 @@ export default function ContactPage() {
                       <Typography variant="body2" sx={{ color: '#64748B', mb: 1 }}>
                         Connect directly with our agency team for immediate inquiries.
                       </Typography>
-                      <Typography component="a" href="https://wa.me/918072443590" target="_blank" rel="noreferrer" sx={{ color: '#25D366', fontWeight: 700, textDecoration: 'none' }}>
+                      <Typography component="a" href="https://wa.me/918072443590?text=Hi%20NAGORA%20Team!%20%F0%9F%90%8B%20I%20found%20your%20website%20and%20I'd%20like%20to%20discuss%20a%20project%20with%20your%20team%20(Web%2FApp%2FSEO%2FBranding).%20Can%20we%20schedule%20a%20quick%20consultation%3F" target="_blank" rel="noreferrer" sx={{ color: '#25D366', fontWeight: 700, textDecoration: 'none' }}>
                         +91 8072443590 →
                       </Typography>
                     </Box>
@@ -65,8 +65,8 @@ export default function ContactPage() {
                       <Typography variant="body2" sx={{ color: '#64748B', mb: 1 }}>
                         Send detailed briefs or RFPs to our project inbox.
                       </Typography>
-                      <Typography component="a" href="mailto:contact@nagoradigital.com" sx={{ color: '#7C3AED', fontWeight: 700, textDecoration: 'none' }}>
-                        contact@nagoradigital.com →
+                      <Typography component="a" href="mailto:contact.nagora26@gmail.com" sx={{ color: '#7C3AED', fontWeight: 700, textDecoration: 'none' }}>
+                        contact.nagora26@gmail.com →
                       </Typography>
                     </Box>
                   </CardContent>

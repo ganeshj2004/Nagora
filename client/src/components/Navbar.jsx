@@ -19,6 +19,7 @@ import NagoraLogo from './NagoraLogo';
 const navItems = [
   { label: 'Home', path: '/' },
   { label: 'Services', path: '/services' },
+  { label: '0% EMI', path: '/#emi-calculator' },
   { label: 'About', path: '/about' },
   { label: 'Portfolio', path: '/portfolio' },
   { label: 'Process', path: '/#process' },
