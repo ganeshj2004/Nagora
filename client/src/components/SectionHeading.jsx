@@ -50,6 +50,7 @@ export default function SectionHeading({
           fontWeight: 800,
           lineHeight: 1.15,
           letterSpacing: '-0.02em',
+          whiteSpace: 'pre-line',
           mb: subtitle ? 2 : 0,
         }}
       >

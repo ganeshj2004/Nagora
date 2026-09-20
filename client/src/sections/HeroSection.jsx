@@ -57,8 +57,7 @@ export default function HeroSection() {
                   }}
                 />
                 <Chip
-                  icon={<Percent size={14} color="#B8860B" />}
-                  label="NEW: 50% DOWN + 0% EMI PLANS"
+                  label="✨ PAY HALF NOW • PAY HALF LATER"
                   size="small"
                   onClick={() => {
                     const el = document.getElementById('emi-calculator');
@@ -98,12 +97,12 @@ export default function HeroSection() {
                 }}
               >
                 BUILD YOUR BRAND.{' '}
-                <Box 
-                  component="span" 
-                  sx={{ 
-                    color: '#7C3AED', 
+                <Box
+                  component="span"
+                  sx={{
+                    color: '#7C3AED',
                     position: 'relative',
-                    display: 'inline-block' 
+                    display: 'inline-block'
                   }}
                 >
                   GROW

@@ -48,11 +48,11 @@ const budgetOptions = [
 ];
 
 const emiOptions = [
-  'Standard Full Payment (No EMI)',
-  '⚡ 50% Down Payment + 3 Months EMI (0% Interest)',
-  '⚡ 50% Down Payment + 6 Months EMI (0% Interest)',
-  '⚡ 50% Down Payment + 12 Months EMI (0% Interest)',
-  '💳 Discuss Custom Flexible EMI Options',
+  'Full Payment (100% Upfront)',
+  '⚡ Pay 50% Now + 3 Easy Monthly Parts (0% Extra Fee)',
+  '⚡ Pay 50% Now + 6 Easy Monthly Parts (0% Extra Fee)',
+  '⚡ Pay 50% Now + 12 Easy Monthly Parts (0% Extra Fee)',
+  '💳 Custom Easy Monthly Payment Plan',
 ];
 
 export default function ContactForm() {
@@ -72,13 +72,13 @@ export default function ContactForm() {
       company: '',
       service: 'Website Development',
       budget: '₹50,000 - ₹1,50,000 ($600 - $1,800)',
-      emiPlan: initialEmi ? '⚡ 50% Down Payment + 6 Months EMI (0% Interest)' : 'Standard Full Payment (No EMI)',
-      message: initialEmi ? `I am interested in the 50:50 EMI Development Option.\nPlan Details: ${initialEmi}` : '',
+      emiPlan: initialEmi ? '⚡ Pay 50% Now + 6 Easy Monthly Parts (0% Extra Fee)' : 'Full Payment (100% Upfront)',
+      message: initialEmi ? `I am interested in the Pay Half Now, Pay Half Later option.\nPlan Details: ${initialEmi}` : '',
     },
   });
 
   const selectedEmiPlan = watch('emiPlan');
-  const isEmiSelected = selectedEmiPlan && selectedEmiPlan !== 'Standard Full Payment (No EMI)';
+  const isEmiSelected = selectedEmiPlan && selectedEmiPlan !== 'Full Payment (100% Upfront)';
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -123,7 +123,7 @@ export default function ContactForm() {
           severity="info" 
           sx={{ mb: 3, borderRadius: 3, backgroundColor: 'rgba(212, 175, 55, 0.1)', color: '#0A1128', border: '1px solid rgba(212, 175, 55, 0.4)', fontWeight: 600 }}
         >
-          💳 <strong>50:50 Flexi-Pay EMI Plan Pre-Selected:</strong> {initialEmi}
+          💳 <strong>Easy Payment Plan Selected:</strong> {initialEmi}
         </Alert>
       )}
 
@@ -133,7 +133,7 @@ export default function ContactForm() {
           severity="success" 
           sx={{ mb: 4, borderRadius: 3, backgroundColor: 'rgba(16, 185, 129, 0.08)', color: '#065F46', border: '1px solid rgba(16, 185, 129, 0.3)', fontWeight: 600 }}
         >
-          🛡️ <strong>Direct NAGORA In-House Finance:</strong> Auto-Pay collection setup via UPI/Card (No bank credit checks required).
+          🛡️ <strong>Direct NAGORA Easy UPI Payment:</strong> Pay half now to start, rest in easy monthly parts. No paperwork needed!
         </Alert>
       )}
 
@@ -276,8 +276,8 @@ export default function ContactForm() {
                 {...field}
                 select
                 fullWidth
-                label="50:50 Flexi-Pay / Auto-Pay Option"
-                helperText={isEmiSelected ? "Direct NAGORA In-House Finance — Auto-Pay via UPI/Card (No bank checks)" : "Select 50:50 Flexi-Pay or standard payment"}
+                label="Payment Option"
+                helperText={isEmiSelected ? "Pay 50% now to launch, rest in easy monthly parts via simple UPI!" : "Select full payment or pay half later plan"}
                 FormHelperTextProps={{
                   sx: {
                     color: isEmiSelected ? '#059669' : '#64748B',

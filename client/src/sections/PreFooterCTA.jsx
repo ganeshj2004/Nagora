@@ -130,7 +130,7 @@ export default function PreFooterCTA() {
                 variant="outlined"
                 size="large"
                 component="a"
-                href="https://wa.me/918072443590?text=Hi%20NAGORA%20Team!%20%F0%9F%9A%80%20I'm%20interested%20in%20scaling%20my%20brand%20with%20NAGORA%20and%20exploring%20your%2050%3A50%20Flexi-Pay%20(0%25%20EMI)%20options.%20Let's%20talk!"
+                href="https://wa.me/918072443590?text=Hi%20NAGORA%20Team!%20%F0%9F%9A%80%20I'm%20interested%20in%20starting%20my%20project%20with%20your%20Pay%20Half%20Now%20plan.%20Let's%20talk!"
                 target="_blank"
                 rel="noreferrer"
                 startIcon={<MessageSquare size={20} color="#25D366" />}

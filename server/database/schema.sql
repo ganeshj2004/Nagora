@@ -4,6 +4,9 @@ CREATE DATABASE IF NOT EXISTS `nagora_db` DEFAULT CHARACTER SET utf8mb4 COLLATE 
 USE `nagora_db`;
 
 -- Drop existing tables to prevent legacy column mismatch errors
+DROP TABLE IF EXISTS `payment_audit_logs`;
+DROP TABLE IF EXISTS `payment_requests`;
+DROP TABLE IF EXISTS `payments`;
 DROP TABLE IF EXISTS `contacts`;
 DROP TABLE IF EXISTS `enquiries`;
 DROP TABLE IF EXISTS `testimonials`;
@@ -96,3 +99,68 @@ CREATE TABLE `contacts` (
   `message` TEXT NOT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Payment Requests & Billing Schedules
+CREATE TABLE `payment_requests` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `request_token` VARCHAR(64) NOT NULL UNIQUE,
+  `client_name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `phone` VARCHAR(30) NOT NULL,
+  `company` VARCHAR(100),
+  `service_name` VARCHAR(100) NOT NULL,
+  `plan_type` ENUM('Full', 'Advance_50', 'Installments_Monthly') NOT NULL,
+  `total_project_amount` DECIMAL(10, 2) NOT NULL,
+  `amount_due` DECIMAL(10, 2) NOT NULL,
+  `installment_number` INT DEFAULT 1,
+  `total_installments` INT DEFAULT 1,
+  `due_date` DATE,
+  `status` ENUM('CREATED', 'PAYMENT_PENDING', 'UTR_SUBMITTED', 'UNDER_REVIEW', 'VERIFIED', 'REJECTED', 'EXPIRED') DEFAULT 'PAYMENT_PENDING',
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_token` (`request_token`),
+  INDEX `idx_phone` (`phone`),
+  INDEX `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Payments / Verified Transactions table
+CREATE TABLE `payments` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `payment_ref` VARCHAR(50) NOT NULL UNIQUE,
+  `request_token` VARCHAR(64),
+  `client_name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `phone` VARCHAR(30) NOT NULL,
+  `company` VARCHAR(100),
+  `service_name` VARCHAR(100) NOT NULL,
+  `payment_type` ENUM('Full', 'Advance_50', 'Installments_Monthly') NOT NULL,
+  `amount` DECIMAL(10, 2) NOT NULL,
+  `utr_number` VARCHAR(50) NOT NULL UNIQUE,
+  `upi_id_used` VARCHAR(100) DEFAULT '8072443590@okbizaxis',
+  `status` ENUM('UNDER_REVIEW', 'VERIFIED', 'REJECTED') DEFAULT 'UNDER_REVIEW',
+  `rejection_reason` TEXT,
+  `verified_by` VARCHAR(100),
+  `verified_at` DATETIME,
+  `notes` TEXT,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_status` (`status`),
+  INDEX `idx_utr` (`utr_number`),
+  INDEX `idx_token` (`request_token`),
+  INDEX `idx_phone` (`phone`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Audit Logs Table for Security & Verification Tracking
+CREATE TABLE `payment_audit_logs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `payment_ref` VARCHAR(50) NOT NULL,
+  `action` VARCHAR(50) NOT NULL,
+  `performed_by` VARCHAR(100) NOT NULL,
+  `previous_status` VARCHAR(50),
+  `new_status` VARCHAR(50),
+  `details` TEXT,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_ref` (`payment_ref`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+

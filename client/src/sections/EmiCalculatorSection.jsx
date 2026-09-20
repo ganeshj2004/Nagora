@@ -68,10 +68,14 @@ export default function EmiCalculatorSection() {
   };
 
   const handleApplyEmi = () => {
-    navigate('/contact', {
+    navigate('/payment', {
       state: {
-        subject: `EMI Plan Enquiry: ${activePreset ? activePreset.name : 'Custom Project'} (₹${totalPrice.toLocaleString()})`,
-        emiDetails: `Budget: ₹${totalPrice.toLocaleString()} | Upfront 50%: ₹${upfrontPay.toLocaleString()} | EMI: ₹${monthlyEmi.toLocaleString()}/mo for ${tenure} months`
+        mode: 1, // 50% EMI Down Payment mode
+        serviceName: activePreset ? activePreset.name : 'Custom Agency Project',
+        totalPrice: totalPrice,
+        tenure: tenure,
+        monthlyEmi: monthlyEmi,
+        subject: `50% Flexi-Pay: ${activePreset ? activePreset.name : 'Custom Project'} (₹${totalPrice.toLocaleString()})`,
       }
     });
   };
@@ -116,10 +120,10 @@ export default function EmiCalculatorSection() {
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
         {/* Section Heading */}
         <SectionHeading
-          pill="0% INTEREST FLEXI-PAY"
+          pill="PAY HALF NOW • PAY HALF LATER"
           title={
             <span>
-              Build Your Dream Site Now.{' '}
+              Start Your Project Today.{' '}
               <span style={{ 
                 background: 'linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%)', 
                 WebkitBackgroundClip: 'text', 
@@ -130,17 +134,17 @@ export default function EmiCalculatorSection() {
               </span>
             </span>
           }
-          subtitle="We directly finance your project in-house — no 3rd-party banks or credit checks. Pay 50% upfront to launch, and split the remaining 50% into automated monthly Auto-Pay installments as your business grows."
+          subtitle="Split your project cost into easy monthly parts with zero extra charges. Pay 50% now to launch, and pay the rest in simple monthly steps as your business grows."
           lightMode={false}
         />
 
         {/* USP Highlight Badges */}
         <Grid container spacing={2} justifyContent="center" sx={{ mb: 6 }}>
           {[
-            { icon: <Percent size={18} color="#D4AF37" />, title: '0% Interest EMI', desc: 'Zero interest & no hidden charges' },
-            { icon: <Zap size={18} color="#38BDF8" />, title: '50% Down Payment', desc: 'Instant project launch' },
-            { icon: <ShieldCheck size={18} color="#C084FC" />, title: 'Direct In-House Finance', desc: 'No bank credit checks needed' },
-            { icon: <CreditCard size={18} color="#34D399" />, title: 'Automated Auto-Pay', desc: 'Seamless monthly UPI / Card debit' },
+            { icon: <Percent size={18} color="#D4AF37" />, title: '0% Extra Fee', desc: 'No interest or hidden charges' },
+            { icon: <Zap size={18} color="#38BDF8" />, title: 'Pay 50% to Start', desc: 'Instant project launch' },
+            { icon: <ShieldCheck size={18} color="#C084FC" />, title: 'Direct & Simple', desc: 'No bank checks or loan papers' },
+            { icon: <CreditCard size={18} color="#34D399" />, title: 'Easy UPI Payment', desc: 'Pay with GPay, PhonePe, Paytm' },
           ].map((feature, idx) => (
             <Grid item xs={6} sm={3} key={idx}>
               <Box
@@ -188,7 +192,7 @@ export default function EmiCalculatorSection() {
             {/* Left Column: Preset selection & price slider */}
             <Grid item xs={12} md={7}>
               <Typography variant="h6" sx={{ fontWeight: 800, color: '#FFFFFF', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Calculator size={22} color="#D4AF37" /> Select Your Project Package
+                <Calculator size={22} color="#D4AF37" /> 1. Pick Your Package
               </Typography>
 
               {/* Package Presets */}
@@ -236,7 +240,7 @@ export default function EmiCalculatorSection() {
               <Box sx={{ mb: 4, px: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
                   <Typography sx={{ fontSize: '0.9rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>
-                    Customize Project Budget:
+                    Or Customize Project Budget:
                   </Typography>
                   <Typography sx={{ fontSize: '1.3rem', fontWeight: 900, color: '#7C3AED' }}>
                     ₹{customPrice.toLocaleString()}
@@ -274,7 +278,7 @@ export default function EmiCalculatorSection() {
               {/* Tenure Selection */}
               <Box>
                 <Typography sx={{ fontSize: '0.9rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', mb: 1.5 }}>
-                  Select EMI Installment Period:
+                  2. Choose Easy Payment Months:
                 </Typography>
                 <Stack direction="row" spacing={1.5}>
                   {[3, 6, 9, 12].map((m) => (
@@ -306,7 +310,7 @@ export default function EmiCalculatorSection() {
               {activePreset && (
                 <Box sx={{ mt: 4, pt: 3, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                   <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#D4AF37', textTransform: 'uppercase', letterSpacing: '0.1em', mb: 1.5 }}>
-                    Included Deliverables:
+                    What You Get Included:
                   </Typography>
                   <Grid container spacing={1}>
                     {activePreset.deliverables.map((item, idx) => (
@@ -340,7 +344,7 @@ export default function EmiCalculatorSection() {
                 {/* Floating Tag */}
                 <Chip
                   icon={<Sparkles size={14} color="#0A1128" />}
-                  label="POPULAR CLIENT CHOICE"
+                  label="POPULAR CHOICE"
                   size="small"
                   sx={{
                     backgroundColor: '#D4AF37',
@@ -355,38 +359,38 @@ export default function EmiCalculatorSection() {
                 />
 
                 <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.1em', mb: 2 }}>
-                  Flexi-Pay Breakdown
+                  Simple Payment Breakdown
                 </Typography>
 
                 {/* Upfront 50% Display */}
                 <Box sx={{ mb: 3, p: 2, borderRadius: '16px', background: 'rgba(124, 58, 237, 0.12)', border: '1px solid rgba(124, 58, 237, 0.3)' }}>
                   <Typography sx={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>
-                    1️⃣ Upfront Down Payment (50%)
+                    1️⃣ Pay Now to Start (50%)
                   </Typography>
                   <Typography variant="h4" sx={{ fontWeight: 900, color: '#FFFFFF', mt: 0.5 }}>
                     ₹{upfrontPay.toLocaleString()}
                   </Typography>
                   <Typography sx={{ fontSize: '0.72rem', color: '#C084FC', mt: 0.5 }}>
-                    ⚡ Pay this to immediately start design & engineering
+                    ⚡ Pay this to immediately start work on your project
                   </Typography>
                 </Box>
 
                 {/* Monthly Installment Display */}
                 <Box sx={{ mb: 4, p: 2.5, borderRadius: '16px', background: 'rgba(212, 175, 55, 0.12)', border: '1px solid rgba(212, 175, 55, 0.4)' }}>
                   <Typography sx={{ fontSize: '0.8rem', color: '#D4AF37', fontWeight: 700 }}>
-                    2️⃣ Remaining 50% Monthly Auto-Pay ({tenure} Months)
+                    2️⃣ Pay Later in Easy Parts ({tenure} Months)
                   </Typography>
                   <Typography variant="h3" sx={{ fontWeight: 900, color: '#D4AF37', mt: 0.5, lineHeight: 1.1 }}>
                     ₹{monthlyEmi.toLocaleString()} <Typography component="span" sx={{ fontSize: '1rem', color: 'rgba(255,255,255,0.7)' }}>/ month</Typography>
                   </Typography>
                   <Typography sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.85)', mt: 1 }}>
-                    🔄 Collected automatically via monthly UPI / Card Auto-Debit with 0% interest!
+                    🔄 Pay in simple monthly parts via UPI with 0% extra fee!
                   </Typography>
                 </Box>
 
                 {/* Total Summary */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 1, mb: 3.5, opacity: 0.8, fontSize: '0.85rem' }}>
-                  <span>Total Project Investment:</span>
+                  <span>Total Project Price:</span>
                   <strong style={{ color: '#fff' }}>₹{totalPrice.toLocaleString()}</strong>
                 </Box>
 
@@ -412,7 +416,7 @@ export default function EmiCalculatorSection() {
                     }
                   }}
                 >
-                  Apply For 50:50 Flexi-Pay
+                  Start Project with 50% Payment
                 </Button>
               </Box>
             </Grid>

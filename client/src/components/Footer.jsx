@@ -106,6 +106,8 @@ export default function Footer() {
                 { name: 'Home', path: '/' },
                 { name: 'About Us', path: '/about' },
                 { name: 'Services', path: '/services' },
+                { name: 'Payment Plans', path: '/payment' },
+                { name: 'Track Payment Status', path: '/payment-status' },
                 { name: 'Portfolio', path: '/portfolio' },
                 { name: 'Contact', path: '/contact' },
                 { name: 'Admin Portal', path: '/admin/login' },
