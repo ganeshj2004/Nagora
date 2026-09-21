@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Grid, 
-  Slider, 
-  Button, 
-  Chip, 
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Slider,
+  Button,
+  Chip,
   Paper,
   Stack
 } from '@mui/material';
-import { 
-  Calculator, 
-  CreditCard, 
-  Zap, 
-  ShieldCheck, 
-  CheckCircle2, 
+import {
+  Calculator,
+  CreditCard,
+  Zap,
+  ShieldCheck,
+  CheckCircle2,
   ArrowRight,
   Percent,
   Sparkles,
@@ -27,20 +27,20 @@ import SectionHeading from '../components/SectionHeading';
 
 const PROJECT_PRESETS = [
   {
-    name: 'Starter Business Web',
-    basePrice: 30000,
+    name: 'Starter',
+    basePrice: 12999,
     deliverables: ['Responsive 5-Page Site', 'Fast Load Speed', 'Basic SEO Setup', 'Contact Form & WhatsApp Integration'],
     idealFor: 'Small businesses & personal brands'
   },
   {
-    name: 'Growth E-Commerce / Custom Site',
-    basePrice: 60000,
+    name: 'Professional',
+    basePrice: 17999,
     deliverables: ['Custom React/Node Architecture', 'Payment Gateway Integration', 'Advanced SEO & Analytics', 'Admin Management Panel'],
     idealFor: 'Growing brands & online stores'
   },
   {
-    name: 'Enterprise Web / Mobile App',
-    basePrice: 120000,
+    name: 'Advanced',
+    basePrice: 26999,
     deliverables: ['Full Stack Web + Mobile App', 'Custom Database & Backend API', 'High Scale Cloud Infrastructure', 'Priority 12-Month Support'],
     idealFor: 'Startups & enterprise platforms'
   }
@@ -48,9 +48,9 @@ const PROJECT_PRESETS = [
 
 export default function EmiCalculatorSection() {
   const navigate = useNavigate();
-  const [projectIndex, setProjectIndex] = useState(1);
-  const [customPrice, setCustomPrice] = useState(60000);
-  const [tenure, setTenure] = useState(6); // 3, 6, or 12 months
+  const [projectIndex, setProjectIndex] = useState(0);
+  const [customPrice, setCustomPrice] = useState(12999);
+  const [tenure, setTenure] = useState(6); // 2, 4, 6, or 8 months
 
   const activePreset = PROJECT_PRESETS[projectIndex];
   const totalPrice = customPrice;
@@ -124,13 +124,13 @@ export default function EmiCalculatorSection() {
           title={
             <span>
               Start Your Project Today.{' '}
-              <span style={{ 
-                background: 'linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%)', 
-                WebkitBackgroundClip: 'text', 
+              <span style={{
+                background: 'linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%)',
+                WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 display: 'inline-block'
               }}>
-                Pay 50% Later.
+                50% Now, 0% EMI Later.
               </span>
             </span>
           }
@@ -196,38 +196,69 @@ export default function EmiCalculatorSection() {
               </Typography>
 
               {/* Package Presets */}
-              <Grid container spacing={1.5} sx={{ mb: 4 }}>
+              <Grid container spacing={1.5} sx={{ mb: 4, pt: 1.5 }}>
                 {PROJECT_PRESETS.map((preset, idx) => {
                   const isSelected = projectIndex === idx;
+                  const isPopular = preset.name === 'Professional';
                   return (
                     <Grid item xs={12} sm={4} key={idx}>
                       <Box
                         onClick={() => handlePresetSelect(idx)}
                         sx={{
-                          p: 2,
+                          p: 2.5,
                           borderRadius: '14px',
                           cursor: 'pointer',
-                          background: isSelected 
-                            ? 'linear-gradient(135deg, rgba(124, 58, 237, 0.25) 0%, rgba(212, 175, 55, 0.15) 100%)' 
+                          position: 'relative',
+                          background: isSelected
+                            ? 'linear-gradient(135deg, rgba(124, 58, 237, 0.25) 0%, rgba(212, 175, 55, 0.15) 100%)'
                             : 'rgba(255, 255, 255, 0.03)',
-                          border: isSelected 
-                            ? '2px solid #7C3AED' 
+                          border: isSelected
+                            ? '2px solid #7C3AED'
                             : '1px solid rgba(255, 255, 255, 0.08)',
                           transition: 'all 0.3s ease',
                           height: '100%',
+                          minHeight: '86px',
                           display: 'flex',
                           flexDirection: 'column',
-                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          textAlign: 'center',
                           '&:hover': {
                             borderColor: '#D4AF37',
                             transform: 'translateY(-2px)'
                           }
                         }}
                       >
-                        <Typography sx={{ fontSize: '0.8rem', fontWeight: 800, color: isSelected ? '#D4AF37' : '#FFFFFF', mb: 0.5 }}>
+                        {isPopular && (
+                          <Chip
+                            icon={<Sparkles size={12} color="#0A1128" />}
+                            label="POPULAR CHOICE"
+                            size="small"
+                            sx={{
+                              backgroundColor: '#D4AF37',
+                              color: '#0A1128',
+                              fontWeight: 900,
+                              fontSize: '0.62rem',
+                              letterSpacing: '0.05em',
+                              position: 'absolute',
+                              top: -11,
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                              height: '22px',
+                              boxShadow: '0 2px 8px rgba(212, 175, 55, 0.4)',
+                              whiteSpace: 'nowrap',
+                              pointerEvents: 'none',
+                              zIndex: 2,
+                              '& .MuiChip-label': {
+                                px: 0.8
+                              }
+                            }}
+                          />
+                        )}
+                        <Typography sx={{ fontSize: '0.85rem', fontWeight: 800, color: isSelected ? '#D4AF37' : '#FFFFFF', mb: 0.5, textAlign: 'center' }}>
                           {preset.name}
                         </Typography>
-                        <Typography sx={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF' }}>
+                        <Typography sx={{ fontSize: '1.15rem', fontWeight: 900, color: '#FFFFFF', textAlign: 'center' }}>
                           ₹{preset.basePrice.toLocaleString()}
                         </Typography>
                       </Box>
@@ -248,9 +279,9 @@ export default function EmiCalculatorSection() {
                 </Box>
                 <Slider
                   value={customPrice}
-                  min={20000}
+                  min={10000}
                   max={250000}
-                  step={5000}
+                  step={500}
                   onChange={handleSliderChange}
                   sx={{
                     color: '#7C3AED',
@@ -270,7 +301,7 @@ export default function EmiCalculatorSection() {
                   }}
                 />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', opacity: 0.5, fontSize: '0.75rem' }}>
-                  <span>₹20,000 (Starter)</span>
+                  <span>₹10,000 (Min)</span>
                   <span>₹2,50,000 (Custom Build)</span>
                 </Box>
               </Box>
@@ -281,7 +312,7 @@ export default function EmiCalculatorSection() {
                   2. Choose Easy Payment Months:
                 </Typography>
                 <Stack direction="row" spacing={1.5}>
-                  {[3, 6, 9, 12].map((m) => (
+                  {[2, 4, 6, 8].map((m) => (
                     <Button
                       key={m}
                       variant={tenure === m ? 'contained' : 'outlined'}
@@ -300,7 +331,7 @@ export default function EmiCalculatorSection() {
                         }
                       }}
                     >
-                      {m} Months
+                      {m} months
                     </Button>
                   ))}
                 </Stack>
@@ -341,23 +372,6 @@ export default function EmiCalculatorSection() {
                   overflow: 'hidden'
                 }}
               >
-                {/* Floating Tag */}
-                <Chip
-                  icon={<Sparkles size={14} color="#0A1128" />}
-                  label="POPULAR CHOICE"
-                  size="small"
-                  sx={{
-                    backgroundColor: '#D4AF37',
-                    color: '#0A1128',
-                    fontWeight: 900,
-                    fontSize: '0.7rem',
-                    letterSpacing: '0.08em',
-                    position: 'absolute',
-                    top: 16,
-                    right: 16,
-                  }}
-                />
-
                 <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.1em', mb: 2 }}>
                   Simple Payment Breakdown
                 </Typography>
@@ -378,7 +392,7 @@ export default function EmiCalculatorSection() {
                 {/* Monthly Installment Display */}
                 <Box sx={{ mb: 4, p: 2.5, borderRadius: '16px', background: 'rgba(212, 175, 55, 0.12)', border: '1px solid rgba(212, 175, 55, 0.4)' }}>
                   <Typography sx={{ fontSize: '0.8rem', color: '#D4AF37', fontWeight: 700 }}>
-                    2️⃣ Pay Later in Easy Parts ({tenure} Months)
+                    2️⃣ Pay Later in Easy Parts ({tenure} months)
                   </Typography>
                   <Typography variant="h3" sx={{ fontWeight: 900, color: '#D4AF37', mt: 0.5, lineHeight: 1.1 }}>
                     ₹{monthlyEmi.toLocaleString()} <Typography component="span" sx={{ fontSize: '1rem', color: 'rgba(255,255,255,0.7)' }}>/ month</Typography>

@@ -11,7 +11,7 @@ const enquirySchema = z.object({
   email: z.string().email(),
   company: z.string().optional(),
   service: z.string().min(1),
-  budget: z.string().min(1),
+  budget: z.string().optional().default('Custom / Discussed'),
   message: z.string().min(10),
 });
 
