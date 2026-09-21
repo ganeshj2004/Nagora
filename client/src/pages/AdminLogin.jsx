@@ -22,16 +22,14 @@ export default function AdminLogin() {
 
     try {
       const res = await axios.post('/api/admin/login', { username, password });
-      login(res.data.token || 'demo-admin-jwt-token');
-      navigate('/admin');
-    } catch (err) {
-      // Demo fallback login if API is running in mock mode
-      if (username === 'admin' && password === 'admin123') {
-        login('demo-admin-jwt-token');
+      if (res.data && res.data.token) {
+        login(res.data.token);
         navigate('/admin');
       } else {
-        setError('Invalid admin credentials. Use admin / admin123 for demo access.');
+        setError('Login failed. Please check credentials.');
       }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Invalid admin credentials.');
     } finally {
       setLoading(false);
     }

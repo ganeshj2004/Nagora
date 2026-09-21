@@ -19,23 +19,11 @@ const dbConfig = {
 
 // In-Memory Data Store Fallback for zero-friction local testing
 const inMemoryStore = {
-  enquiries: [
-    {
-      id: 1,
-      name: 'Rahul Sharma',
-      phone: '+91 98765 11223',
-      email: 'rahul@auraproperties.com',
-      company: 'Aura Real Estate',
-      service: 'Website Development',
-      budget: '₹1,50,000 - ₹3,50,000',
-      message: 'We want a modern high-speed property listing website with virtual tour integration.',
-      status: 'New',
-      created_at: new Date().toISOString(),
-    },
-  ],
+  enquiries: [],
   services: [],
   portfolio: [],
   testimonials: [],
+  payments: [],
 };
 
 try {

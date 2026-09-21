@@ -45,7 +45,7 @@ router.post('/admin/login', async (req, res, next) => {
 router.get('/admin/enquiries', authenticateAdmin, async (req, res, next) => {
   try {
     const enquiries = await query('SELECT * FROM enquiries ORDER BY id DESC', []);
-    res.json({ success: true, count: enquiries.length, data: enquiries });
+    res.json({ success: true, count: enquiries.length, data: enquiries, enquiries });
   } catch (err) {
     next(err);
   }

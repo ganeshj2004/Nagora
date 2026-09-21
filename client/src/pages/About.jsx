@@ -71,15 +71,6 @@ const TEAM = [
     badgeBg: 'rgba(236,72,153,0.18)',
     badgeColor: '#F472B6',
   },
-  {
-    name: 'Irfan Barith N',
-    role: 'Cold Caller',
-    photo: '/team/irfan.jpg',
-    badge: 'Business Dev',
-    accent: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)',
-    badgeBg: 'rgba(16,185,129,0.18)',
-    badgeColor: '#34D399',
-  },
 ];
 
 export default function About() {
@@ -276,7 +267,7 @@ export default function About() {
                 fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
               }}
             >
-              Meet Our&nbsp;
+              The Experts&nbsp;
               <Box
                 component="span"
                 sx={{
@@ -285,7 +276,7 @@ export default function About() {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Dream Team
+                Behind Your Success
               </Box>
             </Typography>
             <Typography

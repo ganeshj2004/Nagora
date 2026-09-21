@@ -9,6 +9,7 @@ import portfolioRoutes from './routes/portfolio.js';
 import testimonialRoutes from './routes/testimonials.js';
 import adminRoutes from './routes/admin.js';
 import paymentRoutes from './routes/payments.js';
+import projectRoutes from './routes/projects.js';
 
 import { apiRateLimiter } from './middleware/rateLimiter.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -46,6 +47,7 @@ app.use('/api', portfolioRoutes);
 app.use('/api', testimonialRoutes);
 app.use('/api', adminRoutes);
 app.use('/api', paymentRoutes);
+app.use('/api', projectRoutes);
 
 // 404 Route Handler
 app.use((req, res) => {

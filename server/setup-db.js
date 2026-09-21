@@ -57,7 +57,10 @@ async function setupDatabase() {
     console.log('   - contacts');
     console.log('   - payment_requests');
     console.log('   - payments');
-    console.log('   - payment_audit_logs\n');
+    console.log('   - payment_audit_logs');
+    console.log('   - projects');
+    console.log('   - project_payments');
+    console.log('   - project_audit_logs\n');
 
     // 4. Seed Default Admin User
     console.log('🔐 Seeding Admin Account...');
