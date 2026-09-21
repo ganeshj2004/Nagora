@@ -23,7 +23,6 @@ const schema = z.object({
   email: z.string().email('Please enter a valid email address'),
   company: z.string().optional(),
   service: z.string().min(1, 'Please select a service'),
-  budget: z.string().min(1, 'Please select a budget range'),
   emiPlan: z.string().optional(),
   message: z.string().min(10, 'Please tell us a bit about your project goals'),
 });
@@ -39,20 +38,10 @@ const serviceOptions = [
   'Multiple Services / Full Package',
 ];
 
-const budgetOptions = [
-  'Under ₹50,000 / $600',
-  '₹50,000 - ₹1,50,000 ($600 - $1,800)',
-  '₹1,50,000 - ₹3,50,000 ($1,800 - $4,200)',
-  '₹3,50,000+ ($4,200+)',
-  'To be discussed',
-];
-
-const emiOptions = [
-  'Full Payment (100% Upfront)',
-  '⚡ Pay 50% Now + 3 Easy Monthly Parts (0% Extra Fee)',
-  '⚡ Pay 50% Now + 6 Easy Monthly Parts (0% Extra Fee)',
-  '⚡ Pay 50% Now + 12 Easy Monthly Parts (0% Extra Fee)',
-  '💳 Custom Easy Monthly Payment Plan',
+const paymentOptions = [
+  '100% Full Payment',
+  '30% Advance + 70% on Final Delivery',
+  '50% Advance + 50% at 0% Monthly EMI',
 ];
 
 export default function ContactForm() {
@@ -71,20 +60,59 @@ export default function ContactForm() {
       email: '',
       company: '',
       service: 'Website Development',
-      budget: '₹50,000 - ₹1,50,000 ($600 - $1,800)',
-      emiPlan: initialEmi ? '⚡ Pay 50% Now + 6 Easy Monthly Parts (0% Extra Fee)' : 'Full Payment (100% Upfront)',
-      message: initialEmi ? `I am interested in the Pay Half Now, Pay Half Later option.\nPlan Details: ${initialEmi}` : '',
+      emiPlan: initialEmi ? '50% Advance + 50% at 0% Monthly EMI' : '100% Full Payment',
+      message: initialEmi ? `I am interested in the 50% Advance + 50% at 0% Monthly EMI option.\nPlan Details: ${initialEmi}` : '',
     },
   });
 
-  const selectedEmiPlan = watch('emiPlan');
-  const isEmiSelected = selectedEmiPlan && selectedEmiPlan !== 'Full Payment (100% Upfront)';
+  const watchedValues = watch();
+  const selectedPaymentOption = watchedValues.emiPlan || '100% Full Payment';
+  const isEmiSelected = selectedPaymentOption === '50% Advance + 50% at 0% Monthly EMI';
+
+  const getPaymentHelperText = () => {
+    if (selectedPaymentOption === '50% Advance + 50% at 0% Monthly EMI') {
+      return 'Pay 50% now to launch, rest in easy monthly parts via simple UPI with 0% extra fee!';
+    }
+    if (selectedPaymentOption === '30% Advance + 70% on Final Delivery') {
+      return 'Pay 30% advance to start, remaining 70% on final delivery.';
+    }
+    return 'Pay 100% upfront for prioritized express onboarding and delivery.';
+  };
+
+  const getWhatsAppMessage = () => {
+    const lines = [
+      `*New Project Enquiry - NAGORA*`,
+      watchedValues.name?.trim() ? `👤 *Name:* ${watchedValues.name.trim()}` : null,
+      watchedValues.phone?.trim() ? `📞 *Phone:* ${watchedValues.phone.trim()}` : null,
+      watchedValues.email?.trim() ? `✉️ *Email:* ${watchedValues.email.trim()}` : null,
+      watchedValues.company?.trim() ? `🏢 *Company:* ${watchedValues.company.trim()}` : null,
+      watchedValues.service?.trim() ? `🚀 *Primary Service:* ${watchedValues.service.trim()}` : null,
+      watchedValues.emiPlan?.trim() ? `💳 *Payment Option:* ${watchedValues.emiPlan.trim()}` : null,
+      watchedValues.message?.trim() ? `📝 *Project Details:*\n${watchedValues.message.trim()}` : null,
+    ].filter(Boolean);
+
+    if (!watchedValues.name?.trim() && !watchedValues.phone?.trim() && !watchedValues.message?.trim()) {
+      return `Hi NAGORA Team! 👋\n\nI would like to discuss a new project with you.\n\n*Service Needed:* ${watchedValues.service || 'Website Development'}\n*Payment Option:* ${watchedValues.emiPlan || '100% Full Payment'}`;
+    }
+
+    return lines.join('\n\n');
+  };
+
+  const handleWhatsAppClick = (e) => {
+    e.preventDefault();
+    const message = getWhatsAppMessage();
+    const url = `https://wa.me/918072443590?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   const onSubmit = async (data) => {
     setLoading(true);
     setErrorMsg('');
     try {
-      await axios.post('/api/enquiries', data);
+      await axios.post('/api/enquiries', {
+        ...data,
+        budget: data.emiPlan || 'Custom / Discussed'
+      });
       setSuccess(true);
       reset();
     } catch (err) {
@@ -246,29 +274,6 @@ export default function ContactForm() {
 
         <Grid item xs={12} sm={6}>
           <Controller
-            name="budget"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                select
-                fullWidth
-                label="Estimated Budget Range *"
-                error={!!errors.budget}
-                helperText={errors.budget?.message}
-              >
-                {budgetOptions.map((b) => (
-                  <MenuItem key={b} value={b}>
-                    {b}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Controller
             name="emiPlan"
             control={control}
             render={({ field }) => (
@@ -277,7 +282,7 @@ export default function ContactForm() {
                 select
                 fullWidth
                 label="Payment Option"
-                helperText={isEmiSelected ? "Pay 50% now to launch, rest in easy monthly parts via simple UPI!" : "Select full payment or pay half later plan"}
+                helperText={getPaymentHelperText()}
                 FormHelperTextProps={{
                   sx: {
                     color: isEmiSelected ? '#059669' : '#64748B',
@@ -285,7 +290,7 @@ export default function ContactForm() {
                   }
                 }}
               >
-                {emiOptions.map((opt) => (
+                {paymentOptions.map((opt) => (
                   <MenuItem key={opt} value={opt}>
                     {opt}
                   </MenuItem>
@@ -339,7 +344,8 @@ export default function ContactForm() {
 
             <Button
               component="a"
-              href="https://wa.me/918072443590?text=Hi%20NAGORA%20Team!%20%F0%9F%90%8B%20I'm%20on%20your%20contact%20page%20and%20would%20like%20to%20get%20a%20quick%20quote%2Fconsultation%20for%20a%20new%20project."
+              href={`https://wa.me/918072443590?text=${encodeURIComponent(getWhatsAppMessage())}`}
+              onClick={handleWhatsAppClick}
               target="_blank"
               rel="noreferrer"
               variant="outlined"

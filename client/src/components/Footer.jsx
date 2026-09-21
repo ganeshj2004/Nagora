@@ -67,7 +67,7 @@ export default function Footer() {
             </Typography>
             <Box sx={{ display: 'flex', gap: 1.5 }}>
               {[
-                { icon: <Instagram size={18} />, href: 'https://instagram.com' },
+                { icon: <Instagram size={18} />, href: 'https://www.instagram.com/nagora.digital?stkn=M2lmOHJiMHI3OHAz' },
                 { icon: <Linkedin size={18} />, href: 'https://linkedin.com' },
                 { icon: <Facebook size={18} />, href: 'https://facebook.com' },
                 { icon: <Youtube size={18} />, href: 'https://youtube.com' },
