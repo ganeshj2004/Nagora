@@ -1,11 +1,55 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, Typography, Button, Grid, Chip, Stack } from '@mui/material';
-import { ArrowRight, Sparkles, Code, Smartphone, Camera, Video, Palette, Percent } from 'lucide-react';
+import { ArrowRight, Sparkles, Code, Smartphone, Camera, Zap, CreditCard } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function HeroSection() {
   const navigate = useNavigate();
+
+  // 3D Tilt interactive state
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Max tilt range +- 16 deg
+    const rY = ((x - centerX) / centerX) * 16;
+    const rX = -((y - centerY) / centerY) * 16;
+
+    setRotateX(rX);
+    setRotateY(rY);
+    setGlowPos({ x: (x / rect.width) * 100, y: (y / rect.height) * 100 });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setRotateX(0);
+    setRotateY(0);
+    setGlowPos({ x: 50, y: 50 });
+  };
+
+  const scrollToEmi = () => {
+    const el = document.getElementById('emi-calculator');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/payment');
+    }
+  };
 
   return (
     <Box
@@ -56,13 +100,10 @@ export default function HeroSection() {
                     border: '1px solid rgba(124, 58, 237, 0.2)',
                   }}
                 />
-                <Chip
+                {/* <Chip
                   label="✨ PAY HALF NOW • PAY HALF LATER"
                   size="small"
-                  onClick={() => {
-                    const el = document.getElementById('emi-calculator');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
+                  onClick={scrollToEmi}
                   sx={{
                     backgroundColor: 'rgba(212, 175, 55, 0.12)',
                     color: '#B8860B',
@@ -76,7 +117,7 @@ export default function HeroSection() {
                       backgroundColor: 'rgba(212, 175, 55, 0.22)',
                     }
                   }}
-                />
+                /> */}
               </Stack>
             </motion.div>
 
@@ -198,134 +239,194 @@ export default function HeroSection() {
             </Box>
           </Grid>
 
-          {/* Right Column: Creative Multi-Device Mockup Showcase Graphic */}
+          {/* Right Column: Interactive 3D EMI Offer Banner Poster */}
           <Grid item xs={12} md={5}>
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              style={{ width: '100%' }}
             >
               <Box
                 sx={{
                   position: 'relative',
                   width: '100%',
-                  height: { xs: 360, sm: 440, md: 480 },
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  perspective: '1200px', // True 3D depth context
+                  py: 3,
                 }}
               >
-                {/* Main Laptop/Browser UI Card Mockup */}
+                {/* Dynamic Ambient Neon Glow Orbs behind the 3D card */}
                 <Box
                   sx={{
                     position: 'absolute',
-                    top: '8%',
+                    top: '5%',
                     left: '5%',
-                    right: '5%',
-                    height: '75%',
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: 4,
-                    border: '1px solid #E2E8F0',
-                    boxShadow: '0 25px 60px -15px rgba(10, 17, 40, 0.12)',
-                    overflow: 'hidden',
-                    zIndex: 2,
+                    width: '90%',
+                    height: '90%',
+                    background: 'radial-gradient(circle, rgba(124, 58, 237, 0.4) 0%, rgba(212, 175, 55, 0.35) 50%, transparent 75%)',
+                    filter: 'blur(45px)',
+                    opacity: isHovered ? 0.95 : 0.65,
+                    transform: isHovered ? 'scale(1.15)' : 'scale(1)',
+                    transition: 'all 0.5s ease-out',
+                    zIndex: 0,
+                    pointerEvents: 'none',
                   }}
-                >
-                  {/* Browser Bar */}
-                  <Box sx={{ backgroundColor: '#F8FAFC', py: 1, px: 2, borderBottom: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Box sx={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#EF4444' }} />
-                    <Box sx={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#F59E0B' }} />
-                    <Box sx={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#10B981' }} />
-                    <Typography variant="caption" sx={{ color: '#94A3B8', ml: 1, fontSize: '0.7rem' }}>
-                      nagoradigital.com
-                    </Typography>
-                  </Box>
+                />
 
-                  {/* Mockup Inside Visual */}
-                  <Box sx={{ p: 3, height: 'calc(100% - 32px)', display: 'flex', flexDirection: 'column', gap: 2, backgroundColor: '#FAFAFA' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Box sx={{ width: 80, height: 12, borderRadius: 2, backgroundColor: '#0A1128' }} />
-                      <Box sx={{ width: 60, height: 10, borderRadius: 2, backgroundColor: '#7C3AED' }} />
-                    </Box>
-
-                    <Box sx={{ mt: 1, p: 2, borderRadius: 3, backgroundColor: '#FFFFFF', border: '1px solid #F1F5F9', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
-                      <Box sx={{ width: '70%', height: 14, borderRadius: 2, backgroundColor: '#0A1128', mb: 1 }} />
-                      <Box sx={{ width: '90%', height: 10, borderRadius: 2, backgroundColor: '#94A3B8', mb: 2 }} />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Box sx={{ width: 40, height: 20, borderRadius: 10, backgroundColor: '#7C3AED' }} />
-                        <Box sx={{ width: 40, height: 20, borderRadius: 10, backgroundColor: '#D4AF37' }} />
-                      </Box>
-                    </Box>
-
-                    {/* Analytics Chart Mock */}
-                    <Box sx={{ p: 2, borderRadius: 3, backgroundColor: '#0A1128', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Box>
-                        <Typography variant="caption" sx={{ color: '#D4AF37', fontWeight: 700 }}>+340% GROWTH</Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 800 }}>Revenue & Conversion</Typography>
-                      </Box>
-                      <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'flex-end', height: 28 }}>
-                        <Box sx={{ width: 6, height: 12, backgroundColor: '#7C3AED', borderRadius: 1 }} />
-                        <Box sx={{ width: 6, height: 18, backgroundColor: '#7C3AED', borderRadius: 1 }} />
-                        <Box sx={{ width: 6, height: 24, backgroundColor: '#D4AF37', borderRadius: 1 }} />
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-
-                {/* Floating Mobile Phone Mockup Overlay */}
+                {/* 3D Tilt Card Wrapper */}
                 <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  ref={cardRef}
+                  onMouseMove={handleMouseMove}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={scrollToEmi}
+                  animate={isHovered ? {} : { y: [-8, 8, -8] }}
+                  transition={isHovered ? {} : { duration: 5, repeat: Infinity, ease: 'easeInOut' }}
                   style={{
-                    position: 'absolute',
-                    bottom: '5%',
-                    right: '2%',
-                    width: 140,
-                    height: 250,
-                    backgroundColor: '#0A1128',
+                    position: 'relative',
+                    width: '100%',
+                    maxWidth: 440,
                     borderRadius: 24,
-                    padding: 8,
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.25)',
-                    zIndex: 3,
-                    border: '2px solid rgba(212, 175, 55, 0.4)',
+                    cursor: 'pointer',
+                    transformStyle: 'preserve-3d',
+                    transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(${isHovered ? 1.04 : 1}, ${isHovered ? 1.04 : 1}, 1)`,
+                    transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+                    boxShadow: isHovered
+                      ? '0 30px 60px -12px rgba(124, 58, 237, 0.45), 0 20px 40px -15px rgba(212, 175, 55, 0.5), 0 0 0 2px rgba(212, 175, 55, 0.8)'
+                      : '0 20px 45px -15px rgba(10, 17, 40, 0.25), 0 0 0 1px rgba(212, 175, 55, 0.3)',
+                    zIndex: 1,
                   }}
                 >
-                  <Box sx={{ width: '100%', height: '100%', borderRadius: 18, backgroundColor: '#FFFFFF', overflow: 'hidden', p: 1.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    <Box sx={{ width: 30, height: 4, backgroundColor: '#E2E8F0', borderRadius: 2, mx: 'auto', mb: 1 }} />
-                    <Box sx={{ width: '100%', height: 60, borderRadius: 2, backgroundColor: '#7C3AED' }} />
-                    <Box sx={{ width: '80%', height: 8, backgroundColor: '#0A1128', borderRadius: 1 }} />
-                    <Box sx={{ width: '60%', height: 6, backgroundColor: '#94A3B8', borderRadius: 1 }} />
-                    <Box sx={{ mt: 'auto', p: 1, backgroundColor: '#F8FAFC', borderRadius: 2, textAlign: 'center' }}>
-                      <Typography variant="caption" sx={{ fontWeight: 800, color: '#D4AF37', fontSize: '0.65rem' }}>NAGORA APP</Typography>
-                    </Box>
+                  {/* Glowing 3D Glass Border & Container */}
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      borderRadius: 6,
+                      overflow: 'hidden',
+                      backgroundColor: '#0A1128',
+                      border: '2.5px solid rgba(212, 175, 55, 0.6)',
+                      backgroundClip: 'padding-box',
+                    }}
+                  >
+                    {/* The 2nd Image: Pay 50% Upfront, 0% EMI Banner Poster */}
+                    <Box
+                      component="img"
+                      src="/emi-hero-banner.png"
+                      alt="Nagora Pay 50% Upfront 0% EMI Payment Plan"
+                      sx={{
+                        width: '100%',
+                        height: 'auto',
+                        display: 'block',
+                        objectFit: 'cover',
+                        filter: isHovered ? 'brightness(1.05) contrast(1.02)' : 'brightness(1)',
+                        transition: 'filter 0.3s ease',
+                      }}
+                    />
+
+                    {/* Dynamic Holographic Light Reflection Overlay on Mouse Hover */}
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: `radial-gradient(circle at ${glowPos.x}% ${glowPos.y}%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 40%, transparent 75%)`,
+                        opacity: isHovered ? 1 : 0,
+                        transition: 'opacity 0.3s ease',
+                        pointerEvents: 'none',
+                      }}
+                    />
+
+                    {/* Dynamic Shimmer Light Flare Bar */}
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: '-100%',
+                        width: '60%',
+                        height: '100%',
+                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent)',
+                        transform: 'skewX(-20deg)',
+                        animation: 'shimmer 4s infinite',
+                        '@keyframes shimmer': {
+                          '0%': { left: '-100%' },
+                          '30%': { left: '200%' },
+                          '100%': { left: '200%' },
+                        },
+                        pointerEvents: 'none',
+                      }}
+                    />
                   </Box>
-                </motion.div>
 
-                {/* Floating Creative Lens / Camera Tag Overlay */}
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                  style={{
-                    position: 'absolute',
-                    top: '2%',
-                    left: '0%',
-                    padding: '10px 18px',
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: 30,
-                    border: '1px solid #E2E8F0',
-                    boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    zIndex: 4,
-                  }}
-                >
-                  <Camera size={18} color="#7C3AED" />
-                  <Typography variant="caption" sx={{ fontWeight: 800, color: '#0A1128' }}>
-                    4K Photo & Video Studio
-                  </Typography>
-                </motion.div>
+                  {/* 3D Floating Pop-out Badge 1: Top Right */}
+                  <motion.div
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                    style={{
+                      position: 'absolute',
+                      top: '-16px',
+                      right: '-12px',
+                      transform: 'translateZ(50px)',
+                      zIndex: 10,
+                    }}
+                  >
+                    <Chip
+                      icon={<Zap size={14} color="#FFD700" />}
+                      label="0% EMI FLEXIBLE PLAN"
+                      sx={{
+                        backgroundColor: '#0A1128',
+                        color: '#FFD700',
+                        fontWeight: 800,
+                        fontSize: '0.75rem',
+                        letterSpacing: '0.08em',
+                        px: 1.5,
+                        py: 2.2,
+                        borderRadius: 30,
+                        border: '2px solid #FFD700',
+                        boxShadow: '0 10px 25px rgba(0,0,0,0.5), 0 0 15px rgba(255, 215, 0, 0.4)',
+                      }}
+                    />
+                  </motion.div>
 
+                  {/* 3D Floating Pop-out Badge 2: Bottom Left */}
+                  <motion.div
+                    animate={{ y: [0, 6, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                    style={{
+                      position: 'absolute',
+                      bottom: '-16px',
+                      left: '-12px',
+                      transform: 'translateZ(40px)',
+                      zIndex: 10,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        backgroundColor: 'rgba(124, 58, 237, 0.95)',
+                        backdropFilter: 'blur(10px)',
+                        color: '#FFFFFF',
+                        px: 2,
+                        py: 1,
+                        borderRadius: 30,
+                        border: '1.5px solid rgba(255, 255, 255, 0.4)',
+                        boxShadow: '0 12px 30px rgba(124, 58, 237, 0.5)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                      }}
+                    >
+                      <CreditCard size={16} color="#FFFFFF" />
+                      <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.78rem', letterSpacing: '0.04em' }}>
+                        ✨ PAY 50% UPFRONT • EASY BALANCE
+                      </Typography>
+                    </Box>
+                  </motion.div>
+                </motion.div>
               </Box>
             </motion.div>
           </Grid>
@@ -334,3 +435,4 @@ export default function HeroSection() {
     </Box>
   );
 }
+
