@@ -23,7 +23,6 @@ export default function NagoraLogo({ height = 45, showTagline = false, lightMode
           width: 'auto',
           maxHeight: height,
           objectFit: 'contain',
-          borderRadius: '8px',
           flexShrink: 0,
         }}
       />

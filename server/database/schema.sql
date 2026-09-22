@@ -3,23 +3,8 @@
 CREATE DATABASE IF NOT EXISTS `nagora_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `nagora_db`;
 
--- Drop existing tables to prevent legacy column mismatch errors
-DROP TABLE IF EXISTS `project_audit_logs`;
-DROP TABLE IF EXISTS `project_payments`;
-DROP TABLE IF EXISTS `projects`;
-DROP TABLE IF EXISTS `payment_audit_logs`;
-DROP TABLE IF EXISTS `payment_requests`;
-DROP TABLE IF EXISTS `payments`;
-DROP TABLE IF EXISTS `contacts`;
-DROP TABLE IF EXISTS `enquiries`;
-DROP TABLE IF EXISTS `testimonials`;
-DROP TABLE IF EXISTS `portfolio`;
-DROP TABLE IF EXISTS `portfolio_categories`;
-DROP TABLE IF EXISTS `services`;
-DROP TABLE IF EXISTS `users`;
-
 -- Users / Admin table
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `username` VARCHAR(50) NOT NULL UNIQUE,
   `password_hash` VARCHAR(255) NOT NULL,
@@ -29,7 +14,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Services table
-CREATE TABLE `services` (
+CREATE TABLE IF NOT EXISTS `services` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `number` VARCHAR(10) NOT NULL,
   `title` VARCHAR(100) NOT NULL,
@@ -42,14 +27,14 @@ CREATE TABLE `services` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Portfolio Categories table
-CREATE TABLE `portfolio_categories` (
+CREATE TABLE IF NOT EXISTS `portfolio_categories` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(50) NOT NULL UNIQUE,
   `slug` VARCHAR(50) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Portfolio Items table
-CREATE TABLE `portfolio` (
+CREATE TABLE IF NOT EXISTS `portfolio` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `title` VARCHAR(150) NOT NULL,
   `category` VARCHAR(50) NOT NULL,
@@ -65,7 +50,7 @@ CREATE TABLE `portfolio` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Testimonials table
-CREATE TABLE `testimonials` (
+CREATE TABLE IF NOT EXISTS `testimonials` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(100) NOT NULL,
   `company` VARCHAR(100) NOT NULL,
@@ -77,7 +62,7 @@ CREATE TABLE `testimonials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Enquiries table (Primary Contact Form submissions)
-CREATE TABLE `enquiries` (
+CREATE TABLE IF NOT EXISTS `enquiries` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(100) NOT NULL,
   `phone` VARCHAR(30) NOT NULL,
@@ -94,7 +79,7 @@ CREATE TABLE `enquiries` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Simple Contact Messages table
-CREATE TABLE `contacts` (
+CREATE TABLE IF NOT EXISTS `contacts` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(100) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
@@ -104,7 +89,7 @@ CREATE TABLE `contacts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Payment Requests & Billing Schedules
-CREATE TABLE `payment_requests` (
+CREATE TABLE IF NOT EXISTS `payment_requests` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `request_token` VARCHAR(64) NOT NULL UNIQUE,
   `client_name` VARCHAR(100) NOT NULL,
@@ -127,7 +112,7 @@ CREATE TABLE `payment_requests` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Payments / Verified Transactions table
-CREATE TABLE `payments` (
+CREATE TABLE IF NOT EXISTS `payments` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `payment_ref` VARCHAR(50) NOT NULL UNIQUE,
   `request_token` VARCHAR(64),

@@ -6,8 +6,8 @@ import { authenticateAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-const UPI_VPA = '8072443590@okbizaxis';
-const PAYEE_NAME = 'NAGORA Digital Agency';
+const UPI_VPA = process.env.UPI_VPA || '8072443590@okbizaxis';
+const PAYEE_NAME = process.env.PAYEE_NAME || 'NAGORA Digital Agency';
 
 // Helper function to generate unique Payment Request Tokens & Receipt IDs
 function generateRequestToken() {

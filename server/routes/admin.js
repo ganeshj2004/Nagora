@@ -3,12 +3,20 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { query } from '../config/db.js';
 import { authenticateAdmin } from '../middleware/auth.js';
+import { loginRateLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'nagora_super_secret_jwt_key_2026';
+
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.trim() === '') {
+    throw new Error('JWT_SECRET environment variable is required. Configure it in the environment.');
+  }
+  return secret;
+}
 
 // POST /api/admin/login
-router.post('/admin/login', async (req, res, next) => {
+router.post('/admin/login', loginRateLimiter, async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
@@ -16,9 +24,12 @@ router.post('/admin/login', async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Username and password are required.' });
     }
 
-    // Default admin credential fallback check
-    if (username === 'admin' && password === 'admin123') {
-      const token = jwt.sign({ username: 'admin', role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
+    const secret = getJwtSecret();
+
+    // Admin credential check against environment variable or database user
+    const envAdminPassword = process.env.ADMIN_PASSWORD;
+    if (username === 'admin' && envAdminPassword && password === envAdminPassword) {
+      const token = jwt.sign({ username: 'admin', role: 'admin' }, secret, { expiresIn: '24h' });
       return res.json({ success: true, token, user: { username: 'admin', role: 'admin' } });
     }
 
@@ -34,7 +45,7 @@ router.post('/admin/login', async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Invalid admin credentials.' });
     }
 
-    const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ id: user.id, username: user.username, role: user.role || 'admin' }, secret, { expiresIn: '24h' });
     res.json({ success: true, token, user: { id: user.id, username: user.username, role: user.role } });
   } catch (err) {
     next(err);

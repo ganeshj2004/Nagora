@@ -128,20 +128,19 @@ export default function SplashPreloader({ onComplete }) {
             <Box
               component={motion.div}
               animate={{
-                boxShadow: [
-                  '0 0 20px rgba(124, 58, 237, 0.4)',
-                  '0 0 50px rgba(124, 58, 237, 0.95), 0 0 80px rgba(212, 175, 55, 0.6)',
-                  '0 0 35px rgba(124, 58, 237, 0.5)',
+                filter: [
+                  'drop-shadow(0 0 20px rgba(124, 58, 237, 0.6)) drop-shadow(0 0 40px rgba(212, 175, 55, 0.3))',
+                  'drop-shadow(0 0 35px rgba(124, 58, 237, 0.95)) drop-shadow(0 0 65px rgba(212, 175, 55, 0.6))',
+                  'drop-shadow(0 0 20px rgba(124, 58, 237, 0.6)) drop-shadow(0 0 40px rgba(212, 175, 55, 0.3))',
                 ],
               }}
-              transition={{ duration: 1.8, repeat: Infinity, repeatType: 'reverse' }}
+              transition={{ duration: 2.0, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
               sx={{
-                borderRadius: '20px',
-                p: 1.5,
-                backgroundColor: 'rgba(9, 13, 31, 0.75)',
-                border: '1px solid rgba(212, 175, 55, 0.35)',
-                backdropFilter: 'blur(12px)',
                 mb: 2.5,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                p: 1,
               }}
             >
               <Box
@@ -149,11 +148,10 @@ export default function SplashPreloader({ onComplete }) {
                 src="/logo.png"
                 alt="NAGORA Logo"
                 sx={{
-                  height: { xs: 70, sm: 95, md: 120 },
+                  height: { xs: 80, sm: 110, md: 140 },
                   width: 'auto',
                   objectFit: 'contain',
                   display: 'block',
-                  filter: 'drop-shadow(0 0 15px rgba(124, 58, 237, 0.8))',
                 }}
               />
             </Box>

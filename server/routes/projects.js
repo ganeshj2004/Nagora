@@ -3,6 +3,7 @@ import { z } from 'zod';
 import crypto from 'crypto';
 import { query } from '../config/db.js';
 import { authenticateAdmin } from '../middleware/auth.js';
+import { utrRateLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 
@@ -465,7 +466,7 @@ const submitUtrSchema = z.object({
   notes: z.string().optional(),
 });
 
-router.post('/payment/submit-utr', async (req, res, next) => {
+router.post('/payment/submit-utr', utrRateLimiter, async (req, res, next) => {
   try {
     const data = submitUtrSchema.parse(req.body);
     const cleanProjId = data.project_id.trim();

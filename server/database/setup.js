@@ -137,13 +137,17 @@ async function setupDatabase() {
 
     // 4. Seed Admin Account
     console.log('🔑 Seeding admin user account...');
-    const passwordHash = await bcrypt.hash('admin123', 10);
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (!adminPassword || adminPassword.trim() === '') {
+      throw new Error('ADMIN_PASSWORD environment variable is required to run database setup. Set ADMIN_PASSWORD in environment.');
+    }
+    const passwordHash = await bcrypt.hash(adminPassword, 10);
     await connection.query(`
       INSERT INTO \`users\` (username, password_hash, email, role)
       VALUES ('admin', ?, 'admin@nagoradigital.com', 'admin')
       ON DUPLICATE KEY UPDATE password_hash = VALUES(password_hash);
     `, [passwordHash]);
-    console.log('✅ Default admin user created! (Username: admin | Password: admin123)');
+    console.log('✅ Admin user created! (Username: admin | Password: [SET FROM ADMIN_PASSWORD ENV VARIABLE])');
 
     // 5. Seed Portfolio Categories
     console.log('🏷️  Seeding portfolio categories...');

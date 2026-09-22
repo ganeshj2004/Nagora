@@ -6,18 +6,32 @@ dotenv.config();
 let pool = null;
 let useFallback = false;
 
-const dbConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'nagora_db',
-  port: parseInt(process.env.DB_PORT || '3306'),
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-};
+// Standard DB_* environment variables take priority over provider-specific variables
+const dbHost = process.env.DB_HOST || process.env.MYSQLHOST || 'localhost';
+const dbPort = parseInt(process.env.DB_PORT || process.env.MYSQLPORT || '3306', 10);
+const dbUser = process.env.DB_USER || process.env.MYSQLUSER || 'root';
+const dbPassword = process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : (process.env.MYSQLPASSWORD || '');
+const dbName = process.env.DB_NAME || process.env.MYSQLDATABASE || 'nagora_db';
+const dbUrl = process.env.DATABASE_URL || process.env.MYSQL_URL;
 
-// In-Memory Data Store Fallback for zero-friction local testing
+const isProduction = process.env.NODE_ENV === 'production';
+
+const poolConfig = dbUrl
+  ? dbUrl
+  : {
+      host: dbHost,
+      port: dbPort,
+      user: dbUser,
+      password: dbPassword,
+      database: dbName,
+      waitForConnections: true,
+      connectionLimit: 10,
+      connectTimeout: 10000, // 10 second timeout
+      queueLimit: 0,
+      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+    };
+
+// In-Memory Data Store Fallback for local development/testing ONLY
 const inMemoryStore = {
   enquiries: [],
   services: [],
@@ -27,10 +41,15 @@ const inMemoryStore = {
 };
 
 try {
-  pool = mysql.createPool(dbConfig);
+  pool = mysql.createPool(poolConfig);
 } catch (err) {
-  console.log('MySQL pool init notice: Using in-memory provider fallback until MySQL connection established.');
-  useFallback = true;
+  if (isProduction) {
+    console.error('❌ [FATAL] Failed to initialize production MySQL connection pool:', err.message);
+    throw err;
+  } else {
+    console.warn('⚠️ MySQL pool init notice: Using in-memory provider fallback for local development.');
+    useFallback = true;
+  }
 }
 
 export async function query(sql, params) {
@@ -39,12 +58,23 @@ export async function query(sql, params) {
       const [rows] = await pool.execute(sql, params);
       return rows;
     } catch (err) {
-      console.warn('MySQL Query fallback activated:', err.message);
-      useFallback = true;
+      if (isProduction) {
+        // In production: NEVER silently swallow errors or fall back to mock data
+        console.error('❌ [DB ERROR] MySQL Query failed in production:', err.message);
+        throw new Error('Database operation failed. Real persistent database access is required.');
+      } else {
+        console.warn('⚠️ MySQL Query fallback activated in development mode:', err.message);
+        useFallback = true;
+      }
     }
   }
-  
-  // Return fallback response for queries
+
+  // PRODUCTION SAFETY RULE: Mock in-memory storage is strictly prohibited in production mode
+  if (isProduction) {
+    throw new Error('Database connection unavailable. In-memory data fallback is prohibited in production.');
+  }
+
+  // Development-only fallback response when MySQL is not running locally
   if (sql.includes('enquiries') && sql.includes('INSERT')) {
     const newId = inMemoryStore.enquiries.length + 1;
     const record = { id: newId, ...params, status: 'New', created_at: new Date().toISOString() };
@@ -59,4 +89,23 @@ export async function query(sql, params) {
   return [];
 }
 
+// Graceful process shutdown handler for database connection pool
+async function gracefulShutdown(signal) {
+  console.log(`\n🛑 Received ${signal}. Draining and closing MySQL connection pool...`);
+  if (pool) {
+    try {
+      await pool.end();
+      console.log('✅ MySQL connection pool successfully closed.');
+    } catch (err) {
+      console.error('⚠️ Error closing MySQL connection pool:', err.message);
+    }
+  }
+  process.exit(0);
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
 export default pool;
+
+

@@ -15,12 +15,19 @@ async function setupDatabase() {
   console.log('🚀 NAGORA DIGITAL AGENCY — AUTOMATED DATABASE SETUP');
   console.log('====================================================\n');
 
+  const dbHost = process.env.DB_HOST || process.env.MYSQLHOST || 'localhost';
+  const dbUser = process.env.DB_USER || process.env.MYSQLUSER || 'root';
+  const dbPassword = process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : (process.env.MYSQLPASSWORD || '');
+  const dbName = process.env.DB_NAME || process.env.MYSQLDATABASE || 'nagora_db';
+  const dbPort = parseInt(process.env.DB_PORT || process.env.MYSQLPORT || '3306', 10);
+
   const config = {
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    port: parseInt(process.env.DB_PORT || '3306'),
+    host: dbHost,
+    user: dbUser,
+    password: dbPassword,
+    port: dbPort,
     multipleStatements: true,
+    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
   };
 
   let connection;
@@ -31,7 +38,6 @@ async function setupDatabase() {
     console.log('✅ Connected to MySQL server successfully.\n');
 
     // 1. Create Database if not exists
-    const dbName = process.env.DB_NAME || 'nagora_db';
     console.log(`🛠️ Creating database '${dbName}' if not exists...`);
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
     console.log(`✅ Database '${dbName}' created/verified.\n`);
@@ -64,7 +70,12 @@ async function setupDatabase() {
 
     // 4. Seed Default Admin User
     console.log('🔐 Seeding Admin Account...');
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (!adminPassword || adminPassword.trim() === '') {
+      throw new Error(
+        'ADMIN_PASSWORD environment variable is required to run setup-db. Set ADMIN_PASSWORD in your environment before running database setup.'
+      );
+    }
     const passwordHash = await bcrypt.hash(adminPassword, 10);
 
     await connection.execute(`
@@ -75,7 +86,7 @@ async function setupDatabase() {
 
     console.log(`✅ Admin Account setup completed:`);
     console.log(`   Username: admin`);
-    console.log(`   Password: ${adminPassword}\n`);
+    console.log(`   Password: [SET FROM ADMIN_PASSWORD ENV VARIABLE]\n`);
 
     // 5. Seed Services
     console.log('📦 Seeding NAGORA Services...');

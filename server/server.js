@@ -13,30 +13,68 @@ import projectRoutes from './routes/projects.js';
 
 import { apiRateLimiter } from './middleware/rateLimiter.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { query } from './config/db.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const isProduction = process.env.NODE_ENV === 'production';
 
-// Security & Header Middlewares
+// Production Startup Assertions
+if (isProduction) {
+  if (!process.env.JWT_SECRET) {
+    console.error('❌ [FATAL ERROR] JWT_SECRET environment variable is required in production.');
+    process.exit(1);
+  }
+}
+
+// Trust reverse proxy headers (Required for Nginx / Reverse Proxy compatibility)
+app.set('trust proxy', 1);
+
+// Security Header Middlewares
 app.use(helmet({
-  contentSecurityPolicy: false, // Allows flexible video embeds & fonts in dev
+  contentSecurityPolicy: isProduction ? undefined : false,
 }));
-app.use(cors());
+
+// Strict CORS configuration
+const defaultOrigins = isProduction
+  ? ['https://nagora.digital', 'https://www.nagora.digital']
+  : ['http://localhost:3000', 'http://localhost:5173'];
+
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  : defaultOrigins;
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || (!isProduction && allowedOrigins.includes('*')) || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS policy restriction: Origin ${origin} is not permitted.`));
+    }
+  },
+  credentials: true,
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Global Rate Limiting
 app.use('/api', apiRateLimiter);
 
-// Health Check
-app.get('/api/health', (req, res) => {
+// Health Check Endpoint (Safe production status check)
+app.get('/api/health', async (req, res) => {
+  let dbStatus = 'ok';
+  try {
+    await query('SELECT 1');
+  } catch (err) {
+    dbStatus = 'error';
+  }
+
   res.json({
-    status: 'online',
-    agency: 'NAGORA Digital Agency',
-    tagline: 'GROWING YOUR PROFIT, TOGETHER',
-    timestamp: new Date().toISOString(),
+    status: 'ok',
+    database: dbStatus,
   });
 });
 
@@ -58,5 +96,7 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`🚀 NAGORA Express API Server running on port ${PORT}`);
+  console.log(`🚀 NAGORA Express API Server listening on port ${PORT} [Environment: ${process.env.NODE_ENV || 'development'}]`);
 });
+
+
