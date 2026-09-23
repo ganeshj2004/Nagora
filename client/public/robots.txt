@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /payment-status
+
+Sitemap: https://www.nagora.solutions/sitemap.xml
