@@ -179,14 +179,51 @@ const serviceDetailsMap = {
 export default function ServiceDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const details = serviceDetailsMap[slug] || serviceDetailsMap['website-development'];
+  const activeSlug = slug && serviceDetailsMap[slug] ? slug : 'website-development';
+  const details = serviceDetailsMap[activeSlug];
   const IconComponent = details.icon;
+  const canonicalUrl = `https://www.nagora.solutions/services/${activeSlug}`;
+  const pageTitle = `${details.title} | NAGORA Digital Agency`;
+
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    'name': details.title,
+    'description': details.subtitle,
+    'provider': {
+      '@type': 'Organization',
+      'name': 'NAGORA Digital Agency',
+      'url': 'https://www.nagora.solutions/',
+      'logo': 'https://www.nagora.solutions/logo.png'
+    },
+    'url': canonicalUrl
+  };
 
   return (
     <Box>
       <Helmet>
-        <title>{`${details.title} — NAGORA Digital Agency`}</title>
+        <title>{pageTitle}</title>
         <meta name="description" content={details.subtitle} />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {/* Open Graph */}
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={details.subtitle} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+        <meta property="og:site_name" content="NAGORA Digital Agency" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={details.subtitle} />
+        <meta name="twitter:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(serviceSchema)}
+        </script>
       </Helmet>
 
       {/* Hero Header */}

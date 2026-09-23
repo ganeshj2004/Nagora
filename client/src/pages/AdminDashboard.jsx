@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { 
   Box, 
   Container, 
@@ -732,6 +733,10 @@ export default function AdminDashboard() {
 
   return (
     <Box sx={{ py: 6, backgroundColor: '#F8FAFC', minHeight: '90vh' }}>
+      <Helmet>
+        <title>Admin Dashboard | NAGORA Digital Agency</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <Container maxWidth="lg">
         {/* Top Header */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>

@@ -26,11 +26,55 @@ export default function Home() {
     }
   }, [location]);
 
+  const orgSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    'name': 'NAGORA Digital Agency',
+    'url': 'https://www.nagora.solutions/',
+    'logo': 'https://www.nagora.solutions/logo.png',
+    'description': 'NAGORA Digital Agency provides website development, mobile app development, SEO, photography, video and digital solutions for growing businesses.',
+    'email': 'contact.nagora26@gmail.com',
+    'telephone': '+91 8072443590',
+    'sameAs': [
+      'https://www.instagram.com/nagora.digital?stkn=M2lmOHJiMHI3OHAz'
+    ]
+  };
+
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    'name': 'NAGORA Digital Agency',
+    'url': 'https://www.nagora.solutions/'
+  };
+
   return (
     <Box>
       <Helmet>
-        <title>NAGORA Digital Agency — Growing Your Profit, Together</title>
-        <meta name="description" content="NAGORA is a digital & creative service agency providing Website Development, SEO, App Development, Photography, Videography, Video Editing, and Branding." />
+        <title>NAGORA Digital Agency | Website & App Development</title>
+        <meta name="description" content="NAGORA Digital Agency provides website development, mobile app development, SEO, photography, video and digital solutions for growing businesses." />
+        <link rel="canonical" href="https://www.nagora.solutions/" />
+
+        {/* Open Graph */}
+        <meta property="og:title" content="NAGORA Digital Agency | Website & App Development" />
+        <meta property="og:description" content="NAGORA Digital Agency provides website development, mobile app development, SEO, photography, video and digital solutions for growing businesses." />
+        <meta property="og:url" content="https://www.nagora.solutions/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+        <meta property="og:site_name" content="NAGORA Digital Agency" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="NAGORA Digital Agency | Website & App Development" />
+        <meta name="twitter:description" content="NAGORA Digital Agency provides website development, mobile app development, SEO, photography, video and digital solutions for growing businesses." />
+        <meta name="twitter:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(orgSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(websiteSchema)}
+        </script>
       </Helmet>
 
       <HeroSection />

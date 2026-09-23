@@ -76,11 +76,39 @@ const TEAM = [
 export default function About() {
   const navigate = useNavigate();
 
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    'name': 'About NAGORA | Digital Growth & Creative Studio',
+    'url': 'https://www.nagora.solutions/about',
+    'description': 'Learn about NAGORA Digital Agency, our brand philosophy (Build, Grow, Show), full-stack engineering team, and creative production capabilities.'
+  };
+
   return (
     <Box>
       <Helmet>
-        <title>About NAGORA — Digital Growth & Creative Studio</title>
-        <meta name="description" content="Learn more about NAGORA Digital Agency, our philosophy, technology stack, and creative production capabilities." />
+        <title>About NAGORA | Digital Growth & Creative Studio</title>
+        <meta name="description" content="Learn about NAGORA Digital Agency, our brand philosophy (Build, Grow, Show), full-stack engineering team, and creative production capabilities." />
+        <link rel="canonical" href="https://www.nagora.solutions/about" />
+
+        {/* Open Graph */}
+        <meta property="og:title" content="About NAGORA | Digital Growth & Creative Studio" />
+        <meta property="og:description" content="Learn about NAGORA Digital Agency, our brand philosophy (Build, Grow, Show), full-stack engineering team, and creative production capabilities." />
+        <meta property="og:url" content="https://www.nagora.solutions/about" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+        <meta property="og:site_name" content="NAGORA Digital Agency" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About NAGORA | Digital Growth & Creative Studio" />
+        <meta name="twitter:description" content="Learn about NAGORA Digital Agency, our brand philosophy (Build, Grow, Show), full-stack engineering team, and creative production capabilities." />
+        <meta name="twitter:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(webPageSchema)}
+        </script>
       </Helmet>
 
       {/* Hero Banner */}

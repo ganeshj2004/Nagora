@@ -5,11 +5,52 @@ import { Mail, Phone, MapPin, MessageSquare, Clock } from 'lucide-react';
 import ContactForm from '../components/ContactForm';
 
 export default function ContactPage() {
+  const contactPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    'name': 'Contact NAGORA | Start Your Digital Growth Project',
+    'url': 'https://www.nagora.solutions/contact',
+    'description': 'Get in touch with NAGORA Digital Agency. Request a consultation for website development, SEO, apps, photography, videography, or branding.',
+    'mainEntity': {
+      '@type': 'Organization',
+      'name': 'NAGORA Digital Agency',
+      'url': 'https://www.nagora.solutions/',
+      'email': 'contact.nagora26@gmail.com',
+      'telephone': '+91 8072443590',
+      'contactPoint': {
+        '@type': 'ContactPoint',
+        'telephone': '+91 8072443590',
+        'contactType': 'customer support',
+        'email': 'contact.nagora26@gmail.com'
+      }
+    }
+  };
+
   return (
     <Box>
       <Helmet>
-        <title>Contact NAGORA — Start Your Digital Growth Project</title>
+        <title>Contact NAGORA | Start Your Digital Growth Project</title>
         <meta name="description" content="Get in touch with NAGORA Digital Agency. Request a consultation for website development, SEO, apps, photography, videography, or branding." />
+        <link rel="canonical" href="https://www.nagora.solutions/contact" />
+
+        {/* Open Graph */}
+        <meta property="og:title" content="Contact NAGORA | Start Your Digital Growth Project" />
+        <meta property="og:description" content="Get in touch with NAGORA Digital Agency. Request a consultation for website development, SEO, apps, photography, videography, or branding." />
+        <meta property="og:url" content="https://www.nagora.solutions/contact" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+        <meta property="og:site_name" content="NAGORA Digital Agency" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact NAGORA | Start Your Digital Growth Project" />
+        <meta name="twitter:description" content="Get in touch with NAGORA Digital Agency. Request a consultation for website development, SEO, apps, photography, videography, or branding." />
+        <meta name="twitter:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(contactPageSchema)}
+        </script>
       </Helmet>
 
       {/* Hero Header */}

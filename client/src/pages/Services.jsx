@@ -5,11 +5,39 @@ import ServicesSection from '../sections/ServicesSection';
 import PreFooterCTA from '../sections/PreFooterCTA';
 
 export default function Services() {
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    'name': 'Services — NAGORA Digital Agency',
+    'url': 'https://www.nagora.solutions/services',
+    'description': 'Explore NAGORA\'s full suite of services: Website Development, SEO, App Development, Photography, Videography, Video Editing, and Branding.'
+  };
+
   return (
     <Box>
       <Helmet>
         <title>Services — NAGORA Digital Agency</title>
         <meta name="description" content="Explore NAGORA's full suite of services: Website Development, SEO, App Development, Photography, Videography, Video Editing, and Branding." />
+        <link rel="canonical" href="https://www.nagora.solutions/services" />
+
+        {/* Open Graph */}
+        <meta property="og:title" content="Services — NAGORA Digital Agency" />
+        <meta property="og:description" content="Explore NAGORA's full suite of services: Website Development, SEO, App Development, Photography, Videography, Video Editing, and Branding." />
+        <meta property="og:url" content="https://www.nagora.solutions/services" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+        <meta property="og:site_name" content="NAGORA Digital Agency" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Services — NAGORA Digital Agency" />
+        <meta name="twitter:description" content="Explore NAGORA's full suite of services: Website Development, SEO, App Development, Photography, Videography, Video Editing, and Branding." />
+        <meta name="twitter:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(webPageSchema)}
+        </script>
       </Helmet>
 
       <Box sx={{ py: { xs: 8, md: 10 }, backgroundColor: '#0A1128', color: '#FFFFFF', textAlign: 'center' }}>

@@ -156,8 +156,23 @@ export default function PaymentPage() {
   return (
     <Box sx={{ backgroundColor: '#060B1E', color: '#FFFFFF', minHeight: '100vh', pb: 12, pt: 3 }}>
       <Helmet>
-        <title>Fast UPI Payments & Project Confirmation | NAGORA Digital Agency</title>
-        <meta name="description" content="Securely pay digital agency project invoices or installments via official UPI VPA." />
+        <title>Project Payment & Confirmation | NAGORA Digital Agency</title>
+        <meta name="description" content="Pay digital agency project invoices or installments securely via official UPI VPA." />
+        <link rel="canonical" href="https://www.nagora.solutions/payment" />
+
+        {/* Open Graph */}
+        <meta property="og:title" content="Project Payment & Confirmation | NAGORA Digital Agency" />
+        <meta property="og:description" content="Pay digital agency project invoices or installments securely via official UPI VPA." />
+        <meta property="og:url" content="https://www.nagora.solutions/payment" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
+        <meta property="og:site_name" content="NAGORA Digital Agency" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Project Payment & Confirmation | NAGORA Digital Agency" />
+        <meta name="twitter:description" content="Pay digital agency project invoices or installments securely via official UPI VPA." />
+        <meta name="twitter:image" content="https://www.nagora.solutions/emi-hero-banner.png" />
       </Helmet>
 
       {/* Header Banner */}

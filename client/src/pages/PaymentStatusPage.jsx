@@ -131,6 +131,7 @@ export default function PaymentStatusPage() {
       <Helmet>
         <title>Customer Payment Status & Ledger | NAGORA Digital Agency</title>
         <meta name="description" content="Check your project payment status, payment schedule history, remaining balances, and verified receipts." />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       {/* Header Banner */}

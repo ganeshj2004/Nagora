@@ -11,6 +11,7 @@ export default function NotFound() {
     <Box sx={{ py: 14, textAlign: 'center', backgroundColor: '#FFFFFF', minHeight: '75vh', display: 'flex', alignItems: 'center' }}>
       <Helmet>
         <title>404 — Page Not Found | NAGORA Digital Agency</title>
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <Container maxWidth="sm">

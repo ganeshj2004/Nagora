@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, Card, CardContent, Typography, TextField, Button, Alert } from '@mui/material';
 import { Lock, LogIn } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import NagoraLogo from '../components/NagoraLogo';
@@ -37,6 +38,10 @@ export default function AdminLogin() {
 
   return (
     <Box sx={{ py: 12, backgroundColor: '#0A1128', minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
+      <Helmet>
+        <title>Admin Portal Login | NAGORA Digital Agency</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <Container maxWidth="xs">
         <Card sx={{ p: 2, borderRadius: 4, boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
           <CardContent component="form" onSubmit={handleLogin} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, textAlign: 'center' }}>
