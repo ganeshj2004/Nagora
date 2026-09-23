@@ -6,7 +6,7 @@ export default function WhatsAppButton({ phoneNumber = '918072443590', message =
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
-    <Tooltip title="Quick Chat on WhatsApp" placement="right" TransitionComponent={Zoom} arrow>
+    <Tooltip title="Quick Chat on WhatsApp" placement="left" TransitionComponent={Zoom} arrow>
       <Box
         component={motion.a}
         href={whatsappUrl}
@@ -20,7 +20,7 @@ export default function WhatsAppButton({ phoneNumber = '918072443590', message =
         sx={{
           position: 'fixed',
           bottom: { xs: 20, md: 28 },
-          left: { xs: 20, md: 28 },
+          right: { xs: 20, md: 28 },
           zIndex: 1200,
           width: { xs: 44, md: 48 },
           height: { xs: 44, md: 48 },

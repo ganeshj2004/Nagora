@@ -134,9 +134,34 @@ export default function EmiCalculatorSection() {
               </span>
             </span>
           }
-          subtitle="Split your project cost into easy monthly parts with zero extra charges. Pay 50% now to launch, and pay the rest in simple monthly steps as your business grows."
+          subtitle="Available exclusively for Website & Mobile App Development projects. Split your project cost into easy monthly parts with zero extra charges. Pay 50% now to launch, and pay the rest in simple monthly steps as your business grows."
           lightMode={false}
         />
+
+        {/* Exclusive Service Notice Chip */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 5, mt: -2 }}>
+          <Chip
+            icon={<Sparkles size={16} color="#D4AF37" />}
+            label="Note: 0% EMI payment option is applicable exclusively for Website & App Development projects"
+            sx={{
+              backgroundColor: 'rgba(212, 175, 55, 0.12)',
+              color: '#D4AF37',
+              border: '1px solid rgba(212, 175, 55, 0.35)',
+              fontWeight: 700,
+              fontSize: { xs: '0.78rem', md: '0.88rem' },
+              py: 2.2,
+              px: 1.5,
+              borderRadius: '50px',
+              maxWidth: '90%',
+              whiteSpace: 'normal',
+              height: 'auto',
+              '& .MuiChip-label': {
+                px: 1,
+                py: 0.5
+              }
+            }}
+          />
+        </Box>
 
         {/* USP Highlight Badges */}
         <Grid container spacing={2} justifyContent="center" sx={{ mb: 6 }}>

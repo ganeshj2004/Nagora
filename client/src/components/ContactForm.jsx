@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -52,7 +52,7 @@ export default function ContactForm() {
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const { control, handleSubmit, reset, watch, formState: { errors } } = useForm({
+  const { control, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
@@ -66,8 +66,24 @@ export default function ContactForm() {
   });
 
   const watchedValues = watch();
+  const selectedService = watchedValues.service || 'Website Development';
   const selectedPaymentOption = watchedValues.emiPlan || '100% Full Payment';
   const isEmiSelected = selectedPaymentOption === '50% Advance + 50% at 0% Monthly EMI';
+
+  const isWebOrApp = selectedService === 'Website Development' || selectedService === 'App Development';
+
+  const availablePaymentOptions = isWebOrApp
+    ? paymentOptions
+    : [
+        '100% Full Payment',
+        '30% Advance + 70% on Final Delivery',
+      ];
+
+  useEffect(() => {
+    if (!isWebOrApp && selectedPaymentOption === '50% Advance + 50% at 0% Monthly EMI') {
+      setValue('emiPlan', '100% Full Payment');
+    }
+  }, [isWebOrApp, selectedPaymentOption, setValue]);
 
   const getPaymentHelperText = () => {
     if (selectedPaymentOption === '50% Advance + 50% at 0% Monthly EMI') {
@@ -290,7 +306,7 @@ export default function ContactForm() {
                   }
                 }}
               >
-                {paymentOptions.map((opt) => (
+                {availablePaymentOptions.map((opt) => (
                   <MenuItem key={opt} value={opt}>
                     {opt}
                   </MenuItem>
